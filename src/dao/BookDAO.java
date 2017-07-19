@@ -1,6 +1,5 @@
 package dao;
 
-
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -8,24 +7,20 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.jdbc.core.JdbcTemplate;
+
 import model.Book;
 import util.ConnectionUtil;
 
 public class BookDAO {
+	
+	private JdbcTemplate jdbctemplate = ConnectionUtil.getJdbcTemplate();
 
 	public void addbook(Book user) throws Exception {
 
-		Connection con = ConnectionUtil.getConnection();
 		String sql = "insert into books(name,price,pub_date,author_id) values( ?,?,?,?)";
-
-		PreparedStatement pst = con.prepareStatement(sql);
-
-		pst.setString(1, user.getName());
-		pst.setFloat(2, user.getPrice());
-		pst.setDate(3, Date.valueOf(user.getPub_date()));
-		pst.setInt(4, user.getAuthor_id());
-
-		int rows = pst.executeUpdate();
+		Object[] params = { user.getName(), user.getPrice(), Date.valueOf(user.getPub_date()), user.getAuthor_id() };
+		int rows = jdbctemplate.update(sql, params);
 		System.out.println("no of rows" + rows);
 
 	}
@@ -44,18 +39,16 @@ public class BookDAO {
 
 			int id = rs.getInt("id");
 			String name = rs.getString("name");
-			float price=rs.getFloat("price");
-			int author_id=rs.getInt("author_id");
-			Date pub_date=rs.getDate("pub_date");
-			
-			
+			float price = rs.getFloat("price");
+			int author_id = rs.getInt("author_id");
+			Date pub_date = rs.getDate("pub_date");
+
 			Book b = new Book();
 			b.setId(id);
 			b.setName(name);
 			b.setPrice(price);
 			b.setAuthor_id(author_id);
 			b.setPub_date(pub_date.toLocalDate());
-			
 
 			booklist.add(b);
 

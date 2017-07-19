@@ -9,30 +9,26 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.jdbc.core.JdbcTemplate;
+
 import model.Order;
 import util.ConnectionUtil;
 
 
 public class OrderDAO {
 
+	private JdbcTemplate jdbctemplate = ConnectionUtil.getJdbcTemplate();
+
 
 	public void addorder(Order user) throws Exception {
 
 		Connection con = ConnectionUtil.getConnection();
 		String sql = "insert into orders(user_id,book_id,quantity,status,order_date) values(?,?,?,?,?)";
+		Object[] params = { user.getUser_id(), user.getBook_id(),user.getQuantity(),user.getStatus(), Date.valueOf(user.getOrdered_date()) };
+		int rows = jdbctemplate.update(sql, params);
 
-		PreparedStatement pst = con.prepareStatement(sql);
-
-		pst.setInt(1, user.getUser_id());
-		pst.setInt(2, user.getBook_id());
-		pst.setInt(3, user.getQuantity());
-		pst.setString(4, user.getStatus());
-		pst.setDate(5, Date.valueOf(user.getOrdered_date()));
 		
-		
-	
 
-		int rows = pst.executeUpdate();
 		System.out.println("no of rows" + rows);
 
 	}

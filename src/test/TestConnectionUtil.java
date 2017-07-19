@@ -3,6 +3,8 @@ package test;
 
 import java.sql.Connection;
 
+import org.springframework.jdbc.core.JdbcTemplate;
+
 import util.ConnectionUtil;
 
 public class TestConnectionUtil {
@@ -12,6 +14,8 @@ public class TestConnectionUtil {
 			Connection con = ConnectionUtil.getConnection();
 	         System.out.println("Connection:" +con);
 
-}
 
+        JdbcTemplate jdbcTemplate = ConnectionUtil.getJdbcTemplate();
+        System.out.println(jdbcTemplate);
+		}		
 }
