@@ -22,7 +22,7 @@ public class OrderDAO {
 
 	public void addorder(Order user) throws Exception {
 
-		Connection con = ConnectionUtil.getConnection();
+		JdbcTemplate con = ConnectionUtil.getJdbcTemplate();
 		String sql = "insert into orders(user_id,book_id,quantity,status,order_date) values(?,?,?,?,?)";
 		Object[] params = { user.getUser_id(), user.getBook_id(),user.getQuantity(),user.getStatus(), Date.valueOf(user.getOrdered_date()) };
 		int rows = jdbctemplate.update(sql, params);
@@ -32,18 +32,20 @@ public class OrderDAO {
 		System.out.println("no of rows" + rows);
 
 	}
-	
-	public List<Order> listorderold() throws Exception {
 
-		Connection con = ConnectionUtil.getConnection();
+	public void updatestatus(int orderid,String status) throws Exception{
+		String sql ="update orders set status=? where id=?";
+				int rows =jdbctemplate.update(sql,status,orderid);
+		
+		System.out.println("OrderDAO-> updateStatus - no of rows updated" +rows);
+	}
+	public List<Order> listorder() throws Exception {
+
 		String sql = "select id,user_id,book_id,quantity,status,order_date from orders";
 
-		PreparedStatement pst = con.prepareStatement(sql);
-		List<Order> orderlist = new ArrayList<Order>();
+		List<Order> orderlist = jdbctemplate.query(sql, (rs,rowNo)-> {
 
-		ResultSet rs = pst.executeQuery();
 
-		while (rs.next()) {
             int id =rs.getInt("id");
 			int user_id = rs.getInt("user_id");
 			int book_id = rs.getInt("book_id");
@@ -61,11 +63,11 @@ public class OrderDAO {
 			b.setOrder_date(ordered_date.toLocalDate());
 			
 
-			orderlist.add(b);
 
-		}
+			return b;
+		});
 
-		
+		 
 	
 
 	
@@ -75,7 +77,7 @@ public class OrderDAO {
 	
 	
 	
-	public List<Order> listorder() throws Exception {
+	/*public List<Order> listorder() throws Exception {
 
 		Connection con = ConnectionUtil.getConnection();
 		String sql = "select o.id,user_id,book_id,quantity,status,order_date,u.name as username,b.name as bookname from orders o,users u,books b where u.id=o.user_id and b.id=o.book_id";
@@ -115,6 +117,6 @@ public class OrderDAO {
 	return orderlist;
 	
 	
-	}
+	}*/
 
 }

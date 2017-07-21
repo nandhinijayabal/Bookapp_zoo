@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 public class ConnectionUtil {
 
-	public static Connection getConnection() throws Exception {
+	/*public static Connection getConnection() throws Exception {
 		 
         Connection con = null;
  
@@ -27,7 +27,8 @@ public class ConnectionUtil {
          
         return con;
  
-    }
+    }*/
+	
 	 public static DataSource getDataSource() {
 		 
 	        BasicDataSource ds = new BasicDataSource();

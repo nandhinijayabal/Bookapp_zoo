@@ -27,15 +27,11 @@ public class BookDAO {
 
 	public List<Book> listbook() throws Exception {
 
-		Connection con = ConnectionUtil.getConnection();
 		String sql = "select id,name,price,author_id,pub_date from books";
 
-		PreparedStatement pst = con.prepareStatement(sql);
-		List<Book> booklist = new ArrayList<Book>();
+		List<Book> booklist = jdbctemplate.query(sql, (rs,rowNo)-> {
 
-		ResultSet rs = pst.executeQuery();
 
-		while (rs.next()) {
 
 			int id = rs.getInt("id");
 			String name = rs.getString("name");
@@ -50,9 +46,9 @@ public class BookDAO {
 			b.setAuthor_id(author_id);
 			b.setPub_date(pub_date.toLocalDate());
 
-			booklist.add(b);
-
-		}
+ return b;
+ 
+		});
 
 		System.out.println(booklist);
 

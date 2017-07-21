@@ -4,9 +4,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+
+<title>Spring MVC using XML Configuration</title>
 </head>
 <body>
-
+	<h3>Welcome to Spring MVC(using XML Configuration)</h3>
+	<a href="home">Go to Home page</a>
 </body>
+
 </html>
+

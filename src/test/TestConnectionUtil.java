@@ -11,7 +11,7 @@ public class TestConnectionUtil {
 
 		public static void main(String[] args) throws Exception{
 			
-			Connection con = ConnectionUtil.getConnection();
+			JdbcTemplate con = ConnectionUtil.getJdbcTemplate();
 	         System.out.println("Connection:" +con);
 
 
